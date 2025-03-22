@@ -69,6 +69,22 @@ def optimize_process():
 optimal_T, optimal_OC = optimize_process()
 optimal_H2, optimal_SF = chemical_looping_process(optimal_T, optimal_OC)
 
+# Fault Detection: Anomaly Detection Based on Expected Yield Range
+def detect_fault(T, OC, threshold=0.2):
+    """Detect anomalies by comparing predicted yield with actual yield."""
+    predicted_H2, _ = chemical_looping_process(T, OC)
+    actual_H2 = np.random.normal(predicted_H2, 0.05) # Simulated real-world data with noise
+    deviation =  abs(predicted_H2 - actual_H2)
+
+    if deviation > threshold:
+        print(f"\n⚠️ FAULT DETECTED! Large deviation in hydrogen yield: {deviation:.4f}")
+    else:
+        print("\n✅ System Operating Normally.")
+    return deviation
+
+# Run Fault Detection
+deviation = detect_fault(optimal_T, optimal_OC)
+
 # Display Results
 print("\n===========================================")
 print("        OPTIMIZATION RESULTS")
@@ -77,4 +93,5 @@ print(f"Optimal Reactor Temperature:       {optimal_T:.2f} K")
 print(f"Optimal Oxygen Carrier Efficiency: {optimal_OC:.2f}")
 print(f"Predicted Hydrogen Yield:          {optimal_H2:.4f}")
 print(f"Process Safety Factor:             {optimal_SF:.4f} (Closer to 0 is safer)")
+print(f"Fault Detection Deviation:         {deviation:.4f}")
 print("===========================================\n")
