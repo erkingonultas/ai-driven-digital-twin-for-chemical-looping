@@ -3,3 +3,4 @@ matplotlib==3.7.1
 torch==2.0.1
 gpytorch==1.10
 botorch==0.8.5
+pandas==2.1.1
